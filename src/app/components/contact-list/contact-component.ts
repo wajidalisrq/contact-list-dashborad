@@ -1,11 +1,11 @@
 /* 
-ASSUMPTION: Simplified error handling is implemented for this exercise. 
+ASSUMPTION: Simplified error handling is implemented for this exercise scope. 
 In a full production environment, a global HttpInterceptor would be used 
 to handle errors and display user-facing toast notifications.
 */
 import { Component, OnInit, inject, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterModule } from '@angular/router';
+import { RouterModule, Router, ActivatedRoute } from '@angular/router';
 import { ContactService } from '../../services/contact.service';
 import { Contact } from '../../models/contact.model';
 
@@ -18,8 +18,11 @@ import { Contact } from '../../models/contact.model';
 })
 export class ContactListComponent implements OnInit {
     private contactService = inject(ContactService);
+    private router = inject(Router);
+    private route = inject(ActivatedRoute);
     private cdr = inject(ChangeDetectorRef);
 
+    isSidebarCollapsed: boolean = false;
     contacts: Contact[] = [];
     searchTerm: string = '';
 
@@ -28,8 +31,13 @@ export class ContactListComponent implements OnInit {
         this.contactService.getContacts().subscribe({
             next: (data) => {
                 this.contacts = data;
-                // Force UI change detection after data loads
                 this.cdr.detectChanges();
+
+                // AUTOMATICALLY SELECT FIRST CONTACT ON INITIAL PAGE LOAD
+                // If contacts are loaded and no child route ID is selected in URL, navigate to the 1st contact
+                if (this.contacts.length > 0 && !this.route.snapshot.firstChild) {
+                    this.router.navigate(['/contacts', this.contacts[0].id], { replaceUrl: true });
+                }
             },
             error: (err) => console.error('Error fetching contacts:', err)
         });

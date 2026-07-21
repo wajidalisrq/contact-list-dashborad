@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" fill="none">
+  <!-- Background Circle -->
+  <rect width="32" height="32" rx="8" fill="#6B59CC"/>
+  
+  <!-- Contact Book / User Card Icon -->
+  <path d="M9 7C8.44772 7 8 7.44772 8 8V24C8 24.5523 8.44772 25 9 25H23C23.5523 25 24 24.5523 24 24V8C24 7.44772 23.5523 7 23 7H9Z" fill="#8B7BFF"/>
+  <circle cx="16" cy="13" r="3" fill="white"/>
+  <path d="M11 21C11 18.7909 13.2386 17 16 17C18.7614 17 21 18.7909 21 21" stroke="white" stroke-width="2" stroke-linecap="round"/>
+</svg>

@@ -1,5 +1,21 @@
 <app-skeleton-loader *ngIf="isLoading"></app-skeleton-loader>
 
+<!-- IF NO CONTACT IS SELECTED YET (Initial Load Blank State Fix) -->
+<div *ngIf="!isLoading && !contact"
+    class="flex-1 h-screen flex flex-col items-center justify-center bg-white p-8 text-center font-['Lato',sans-serif]">
+    <div
+        class="w-16 h-16 bg-[#F9F9FC] border border-[#EAEAEE] rounded-2xl flex items-center justify-center text-[#8083A3] mb-4 shadow-sm">
+        <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z">
+            </path>
+        </svg>
+    </div>
+    <h3 class="text-[16px] font-bold text-[#1A1C1D] mb-1">No Contact Selected</h3>
+    <p class="text-[13px] text-[#8083A3] max-w-xs">Please select a contact from the left list to view their complete
+        profile and communication details.</p>
+</div>
+
 <div *ngIf="!isLoading && contact"
     class="flex-1 h-screen overflow-y-auto bg-white p-12 lg:p-16 font-['Lato',sans-serif]">
 
@@ -7,91 +23,97 @@
     <div class="flex items-center gap-8 mb-14">
         <div class="relative">
             <img [src]="contact.avatar" [alt]="contact.firstName"
-                class="w-[114px] h-[114px] rounded-[26px] object-cover border-2 " />
+                class="w-[114px] h-[114px] rounded-[26px] object-cover border-2 border-gray-100" />
         </div>
 
         <div>
-            <h1 class="text-[22px] font-bold text-[#1A1C1D] leading-tight">{{ contact.firstName }} {{ contact.lastName
-                }}</h1>
-            <p class="text-[13px] font-normal text-[#8083A3] mt-1">{{ contact.role || 'UI/UX Designer' }}</p>
+            <h1 class="text-[20px] font-bold text-[#1A1C1D] leading-tight">
+                {{ contact.firstName }} {{ contact.lastName }}
+            </h1>
+            <p class="text-[14px] font-normal text-[#8083A3] mt-1">
+                {{ contact.role || 'UI/UX Designer' }}
+            </p>
 
-            <!-- 122x42 Message Button & Icons -->
+            <!-- 122x42 Message Button & Action Icons -->
             <div class="flex items-center gap-3 mt-4">
-                <button
-                    class="w-[122px] h-[42px] bg-[#6B59CC] hover:bg-[#5846B8] text-white text-[13px] font-bold rounded-[10px] flex items-center justify-center gap-2 transition-colors">
-                    <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                <a [href]="'mailto:' + formattedEmails[0]?.email"
+                    class="w-[122px] h-[42px] bg-[#6B59CC] hover:bg-[#5846B8] text-white text-[16px] font-[700] rounded-[10px] flex items-center justify-center gap-2 transition-colors">
+                    <svg width="15" height="15" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path
-                            d="M2 5a2 2 0 012-2h12a2 2 0 012 2v10a2 2 0 01-2 2H4a2 2 0 01-2-2V5zm3.293 1.293a1 1 0 011.414 0l3.293 3.293 3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z">
-                        </path>
+                            d="M11.25 7.48828C11.25 7.69922 11.168 7.875 11.0039 8.01562C10.8633 8.15625 10.6875 8.22656 10.4766 8.22656H2.98828L0 11.25V0.738281C0 0.527344 0.0703125 0.351562 0.210938 0.210938C0.351562 0.0703125 0.527344 0 0.738281 0H10.4766C10.6875 0 10.8633 0.0703125 11.0039 0.210938C11.168 0.351562 11.25 0.527344 11.25 0.738281V7.48828ZM14.2383 2.98828C14.4492 2.98828 14.625 3.05859 14.7656 3.19922C14.9062 3.33984 14.9766 3.51562 14.9766 3.72656V14.9766L11.9883 11.9883H3.72656C3.51562 11.9883 3.33984 11.918 3.19922 11.7773C3.05859 11.6367 2.98828 11.4609 2.98828 11.25V9.73828H12.7266V2.98828H14.2383Z"
+                            fill="#fff" />
                     </svg>
+
                     Message
+                </a>
+                <a [href]="'tel:' + formattedPhone"
+                    class="w-10 h-10 border border-[#EAEAEE] rounded-xl flex items-center justify-center text-[#8083A3] hover:text-[#1A1C1D] hover:bg-gray-50 transition-colors">
+                    <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path
+                            d="M12.7617 9.28125C12.9727 9.28125 13.1484 9.35156 13.2891 9.49219C13.4297 9.63281 13.5 9.80859 13.5 10.0195V12.6211C13.5 13.207 13.2539 13.5 12.7617 13.5C9.26953 13.5 6.26953 12.2461 3.76172 9.73828C1.25391 7.23047 0 4.23047 0 0.738281C0 0.246094 0.292969 0 0.878906 0H3.48047C3.69141 0 3.86719 0.0703125 4.00781 0.210938C4.14844 0.351562 4.21875 0.527344 4.21875 0.738281C4.21875 1.65234 4.35938 2.53125 4.64062 3.375C4.73438 3.67969 4.67578 3.9375 4.46484 4.14844L3.02344 5.41406C4.10156 7.66406 5.82422 9.36328 8.19141 10.5117L9.35156 9.03516C9.49219 8.89453 9.66797 8.82422 9.87891 8.82422C9.99609 8.82422 10.0781 8.83594 10.125 8.85938C10.9688 9.14062 11.8477 9.28125 12.7617 9.28125Z"
+                            fill="#8083A3" />
+                    </svg>
+
+                </a>
+                <button
+                    class="w-10 h-10 border border-[#EAEAEE] rounded-xl flex items-center justify-center text-[#8083A3] hover:text-[#1A1C1D] hover:bg-gray-50 transition-colors">
+                    <svg width="14" height="13" viewBox="0 0 14 13" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path
+                            d="M6.75 4.5L9.73828 7.52344H7.48828V12.0234H6.01172V7.52344H3.76172L6.75 4.5ZM11.9883 0C12.4102 0 12.7617 0.152344 13.043 0.457031C13.3477 0.738281 13.5 1.08984 13.5 1.51172V10.5117C13.5 10.9102 13.3477 11.2617 13.043 11.5664C12.7383 11.8711 12.3867 12.0234 11.9883 12.0234H9V10.5117H11.9883V3.02344H1.51172V10.5117H4.5V12.0234H1.51172C1.08984 12.0234 0.726562 11.8828 0.421875 11.6016C0.140625 11.2969 0 10.9336 0 10.5117V1.51172C0 1.08984 0.140625 0.738281 0.421875 0.457031C0.726562 0.152344 1.08984 0 1.51172 0H11.9883Z"
+                            fill="#8083A3" />
+                    </svg>
+
                 </button>
                 <button
-                    class="w-10 h-10 border border-[#EAEAEE] rounded-xl flex items-center justify-center text-[#8083A3] hover:text-[#1A1C1D]"><svg
-                        class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z">
-                        </path>
-                    </svg></button>
-                <button
-                    class="w-10 h-10 border border-[#EAEAEE] rounded-xl flex items-center justify-center text-[#8083A3] hover:text-[#1A1C1D]"><svg
-                        class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z">
-                        </path>
-                    </svg></button>
-                <button
-                    class="w-10 h-10 border border-[#EAEAEE] rounded-xl flex items-center justify-center text-[#8083A3] hover:text-[#1A1C1D]"><svg
-                        class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M5 12h.01M12 12h.01M19 12h.01M6 12a1 1 0 11-2 0 1 1 0 012 0zm7 0a1 1 0 11-2 0 1 1 0 012 0zm7 0a1 1 0 11-2 0 1 1 0 012 0z">
-                        </path>
-                    </svg></button>
+                    class="w-10 h-10 border border-[#EAEAEE] rounded-xl flex items-center justify-center text-[#8083A3] hover:text-[#1A1C1D] hover:bg-gray-50 transition-colors">
+                    <svg width="13" height="4" viewBox="0 0 13 4" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path
+                            d="M4.95703 0.457031C5.26172 0.152344 5.61328 0 6.01172 0C6.41016 0 6.76172 0.152344 7.06641 0.457031C7.37109 0.761719 7.52344 1.11328 7.52344 1.51172C7.52344 1.91016 7.37109 2.26172 7.06641 2.56641C6.76172 2.87109 6.41016 3.02344 6.01172 3.02344C5.61328 3.02344 5.26172 2.87109 4.95703 2.56641C4.65234 2.26172 4.5 1.91016 4.5 1.51172C4.5 1.11328 4.65234 0.761719 4.95703 0.457031ZM9.45703 0.457031C9.76172 0.152344 10.1133 0 10.5117 0C10.9102 0 11.2617 0.152344 11.5664 0.457031C11.8711 0.761719 12.0234 1.11328 12.0234 1.51172C12.0234 1.91016 11.8711 2.26172 11.5664 2.56641C11.2617 2.87109 10.9102 3.02344 10.5117 3.02344C10.1133 3.02344 9.76172 2.87109 9.45703 2.56641C9.15234 2.26172 9 1.91016 9 1.51172C9 1.11328 9.15234 0.761719 9.45703 0.457031ZM0.457031 0.457031C0.761719 0.152344 1.11328 0 1.51172 0C1.91016 0 2.26172 0.152344 2.56641 0.457031C2.87109 0.761719 3.02344 1.11328 3.02344 1.51172C3.02344 1.91016 2.87109 2.26172 2.56641 2.56641C2.26172 2.87109 1.91016 3.02344 1.51172 3.02344C1.11328 3.02344 0.761719 2.87109 0.457031 2.56641C0.152344 2.26172 0 1.91016 0 1.51172C0 1.11328 0.152344 0.761719 0.457031 0.457031Z"
+                            fill="#8083A3" />
+                    </svg>
+
+                </button>
             </div>
         </div>
     </div>
 
-    <!-- EXACT FIGMA DETAILS SPECIFICATIONS -->
+    <!-- EXACT FIGMA FULL DETAILS LIST -->
     <div class="space-y-8 max-w-2xl text-[14px]">
 
-        <!-- Bio (Right Aligned #8083A3 Label) -->
+        <!-- Bio -->
         <div class="flex items-start">
             <span class="w-[90px] text-[#8083A3] text-right font-normal pr-8 flex-shrink-0 pt-0.5">Bio</span>
-            <p class="text-[#1A1C1D] font-normal leading-[21px] max-w-lg">{{ contact.bio || 'When I first got into
-                advertising, I was looking for the magical combination that would put website into the top search engine
-                rankings' }}</p>
+            <p class="text-[#1A1C1D] font-normal leading-[21px] max-w-lg">{{ formattedBio }}</p>
         </div>
 
         <!-- Email -->
         <div class="flex items-start">
             <span class="w-[90px] text-[#8083A3] text-right font-normal pr-8 flex-shrink-0 pt-0.5">Email</span>
             <div class="flex-1 space-y-2">
-                <div *ngFor="let em of emails" class="flex items-center justify-between max-w-md">
-                    <span class="text-[#1A1C1D] font-normal leading-[21px]">{{ em.email }}</span>
+                <div *ngFor="let em of formattedEmails" class="flex items-center justify-between max-w-md">
+                    <a [href]="'mailto:' + em.email"
+                        class="text-[#1A1C1D] hover:text-[#6B59CC] transition-colors leading-[21px]">
+                        {{ em.email }}
+                    </a>
                     <span *ngIf="em.isPrimary"
-                        class="bg-[#EFEBFF] text-[#6B59CC] text-[12px] font-bold px-3 py-1 rounded-lg">Primary</span>
+                        class="bg-[#F3F4F9] text-[#8083A3] text-[14px] font-semibold px-3 py-1 rounded-lg">Primary</span>
                 </div>
-                <div *ngIf="emails.length === 0" class="flex items-center justify-between max-w-md">
-                    <span class="text-[#1A1C1D] font-normal leading-[21px]">johanna.stevens@gmail.com</span>
-                    <span class="bg-[#EFEBFF] text-[#6B59CC] text-[12px] font-bold px-3 py-1 rounded-lg">Primary</span>
-                </div>
-                <div *ngIf="emails.length === 0" class="text-[#1A1C1D] font-normal leading-[21px]">
-                    johanna.stevens@whiteui.store</div>
             </div>
         </div>
 
         <!-- Dial -->
         <div class="flex items-center">
             <span class="w-[90px] text-[#8083A3] text-right font-normal pr-8 flex-shrink-0">Dial</span>
-            <span class="text-[#1A1C1D] font-normal leading-[21px]">{{ contact.dial || 'j.stevens@ymsg.com' }}</span>
+            <span class="text-[#1A1C1D] font-normal leading-[21px]">{{ formattedDial }}</span>
         </div>
 
         <!-- Meeting -->
         <div class="flex items-center">
             <span class="w-[90px] text-[#8083A3] text-right font-normal pr-8 flex-shrink-0">Meeting</span>
-            <a [href]="contact.meetingUrl" target="_blank"
-                class="text-[#1A1C1D] hover:text-[#6B59CC] font-normal leading-[21px] underline underline-offset-2">{{
-                contact.meetingUrl || 'http://go.betacall.com/meet/j.stevens' }}</a>
+            <a [href]="formattedMeetingUrl" target="_blank" rel="noopener noreferrer"
+                class="text-[#1A1C1D] hover:text-[#6B59CC] font-normal leading-[21px] underline underline-offset-2 transition-colors">
+                {{ formattedMeetingUrl }}
+            </a>
         </div>
 
         <!-- Phone -->
@@ -99,8 +121,12 @@
             <span class="w-[90px] text-[#8083A3] text-right font-normal pr-8 flex-shrink-0 pt-0.5">Phone</span>
             <div class="flex-1 space-y-2">
                 <div class="flex items-center justify-between max-w-md">
-                    <span class="text-[#1A1C1D] font-normal leading-[21px]">{{ contact.phone || '439-582-1578' }}</span>
-                    <span class="bg-[#EFEBFF] text-[#6B59CC] text-[12px] font-bold px-3 py-1 rounded-lg">Primary</span>
+                    <a [href]="'tel:' + formattedPhone"
+                        class="text-[#1A1C1D] hover:text-[#6B59CC] transition-colors leading-[21px]">
+                        {{ formattedPhone }}
+                    </a>
+                    <span
+                        class="bg-[#F3F4F9] text-[#8083A3] text-[14px] font-semibold px-3 py-1 rounded-lg">Primary</span>
                 </div>
                 <div class="text-[#1A1C1D] font-normal leading-[21px]">621-770-7689</div>
             </div>
@@ -110,38 +136,53 @@
         <div class="flex items-center">
             <span class="w-[90px] text-[#8083A3] text-right font-normal pr-8 flex-shrink-0">Social</span>
             <div class="flex items-center gap-2">
+
+                <!-- Facebook -->
                 <button
-                    class="w-9 h-9 border border-[#EAEAEE] rounded-xl flex items-center justify-center text-[#8083A3] hover:text-[#1A1C1D] hover:bg-gray-50"><svg
-                        class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+                    class="w-9 h-9 border border-[#EAEAEE] rounded-xl flex items-center justify-center text-[#8083A3] hover:text-[#1A1C1D] hover:bg-gray-50 transition-colors">
+                    <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
                         <path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z"></path>
-                    </svg></button>
+                    </svg>
+                </button>
+
+                <!-- Pinterest -->
                 <button
-                    class="w-9 h-9 border border-[#EAEAEE] rounded-xl flex items-center justify-center text-[#8083A3] hover:text-[#1A1C1D] hover:bg-gray-50"><svg
-                        class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+                    class="w-9 h-9 border border-[#EAEAEE] rounded-xl flex items-center justify-center text-[#8083A3] hover:text-[#1A1C1D] hover:bg-gray-50 transition-colors">
+                    <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
                         <path
                             d="M12 2C6.48 2 2 6.48 2 12c0 4.17 2.56 7.74 6.19 9.19-.09-.78-.17-1.98.04-2.83.19-.77 1.22-5.17 1.22-5.17s-.31-.63-.31-1.56c0-1.46.85-2.55 1.9-2.55.9 0 1.33.67 1.33 1.48 0 .9-.57 2.26-.87 3.52-.25 1.05.53 1.9 1.56 1.9 1.87 0 3.31-1.97 3.31-4.82 0-2.52-1.81-4.28-4.4-4.28-3 0-4.76 2.25-4.76 4.57 0 .91.35 1.88.79 2.41.09.11.1.21.07.32l-.29 1.22c-.05.2-.16.24-.37.15-1.39-.65-2.26-2.68-2.26-4.32 0-3.52 2.56-6.75 7.37-6.75 3.87 0 6.88 2.76 6.88 6.45 0 3.84-2.42 6.94-5.78 6.94-1.13 0-2.19-.59-2.55-1.28l-.7 2.65c-.25.97-.93 2.18-1.39 2.92C9.58 21.82 10.76 22 12 22c5.52 0 10-4.48 10-10S17.52 2 12 2z">
                         </path>
-                    </svg></button>
+                    </svg>
+                </button>
+
+                <!-- Twitter -->
                 <button
-                    class="w-9 h-9 border border-[#EAEAEE] rounded-xl flex items-center justify-center text-[#8083A3] hover:text-[#1A1C1D] hover:bg-gray-50"><svg
-                        class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+                    class="w-9 h-9 border border-[#EAEAEE] rounded-xl flex items-center justify-center text-[#8083A3] hover:text-[#1A1C1D] hover:bg-gray-50 transition-colors">
+                    <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
                         <path
                             d="M23 3a10.9 10.9 0 01-3.14 1.53 4.48 4.48 0 00-7.86 3v1A10.66 10.66 0 013 4s-4 9 5 13a11.64 11.64 0 01-7 2c9 5 20 0 20-11.5a4.5 4.5 0 00-.08-.83A7.72 7.72 0 0023 3z">
                         </path>
-                    </svg></button>
+                    </svg>
+                </button>
+
+                <!-- LinkedIn -->
                 <button
-                    class="w-9 h-9 border border-[#EAEAEE] rounded-xl flex items-center justify-center text-[#8083A3] hover:text-[#1A1C1D] hover:bg-gray-50"><svg
-                        class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
-                        <path d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-2-2 2 2 0 00-2 2v7h-4v-7a6 6 0 016-6zM2 9h4v12H2z">
-                        </path>
-                    </svg></button>
-                <button
-                    class="w-9 h-9 border border-[#EAEAEE] rounded-xl flex items-center justify-center text-[#8083A3] hover:text-[#1A1C1D] hover:bg-gray-50"><svg
-                        class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+                    class="w-9 h-9 border border-[#EAEAEE] rounded-xl flex items-center justify-center text-[#8083A3] hover:text-[#1A1C1D] hover:bg-gray-50 transition-colors">
+                    <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
                         <path
-                            d="M12 24C18.6274 24 24 18.6274 24 12C24 5.37258 18.6274 0 12 0C5.37258 0 0 5.37258 0 12C0 18.6274 5.37258 24 12 24Z">
-                        </path>
-                    </svg></button>
+                            d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z" />
+                    </svg>
+                </button>
+
+                <!-- Google -->
+                <button
+                    class="w-9 h-9 border border-[#EAEAEE] rounded-xl flex items-center justify-center text-[#8083A3] hover:text-[#1A1C1D] hover:bg-gray-50 transition-colors">
+                    <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+                        <path
+                            d="M12.48 10.92v3.28h7.84c-.24 1.84-.853 3.187-1.787 4.133-1.147 1.147-2.933 2.4-6.053 2.4-4.827 0-8.6-3.893-8.6-8.72s3.773-8.72 8.6-8.72c2.6 0 4.507 1.027 5.907 2.347l2.307-2.307C18.747 1.44 16.133 0 12.48 0 5.867 0 .307 5.387.307 12s5.56 12 12.173 12c3.573 0 6.267-1.173 8.373-3.36 2.16-2.16 2.84-5.213 2.84-7.667 0-.76-.053-1.467-.173-2.053H12.48z" />
+                    </svg>
+                </button>
+
             </div>
         </div>
 

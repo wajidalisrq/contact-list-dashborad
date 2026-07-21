@@ -6,6 +6,7 @@ export interface Contact {
     avatar: string;
     bio?: string;
     phone?: string;
+    email?: string;
     dial?: string;
     meetingUrl?: string;
     status?: 'online' | 'busy' | 'offline'; // Green/Orange/Red dot on list
