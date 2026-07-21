@@ -1,3 +1,9 @@
+/* 
+ASSUMPTION: Simplified error handling is implemented for this exercise. 
+In a full production environment, a global HttpInterceptor would be used 
+to handle errors and display user-facing toast notifications.
+*/
+
 import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';

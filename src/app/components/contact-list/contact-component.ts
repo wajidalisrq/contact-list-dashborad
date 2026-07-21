@@ -1,3 +1,8 @@
+/* 
+ASSUMPTION: Simplified error handling is implemented for this exercise. 
+In a full production environment, a global HttpInterceptor would be used 
+to handle errors and display user-facing toast notifications.
+*/
 import { Component, OnInit, inject, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
