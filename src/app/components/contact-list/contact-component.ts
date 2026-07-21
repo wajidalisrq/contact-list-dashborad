@@ -35,7 +35,7 @@ export class ContactListComponent implements OnInit {
 
                 // AUTOMATICALLY SELECT FIRST CONTACT ON INITIAL PAGE LOAD
                 // If contacts are loaded and no child route ID is selected in URL, navigate to the 1st contact
-                if (this.contacts.length > 0 && !this.route.snapshot.firstChild) {
+                if (this.contacts.length > 0 && !this.route.snapshot?.firstChild) {
                     this.router.navigate(['/contacts', this.contacts[0].id], { replaceUrl: true });
                 }
             },

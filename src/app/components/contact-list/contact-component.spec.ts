@@ -1,9 +1,13 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { Component } from '@angular/core';
 import { ContactListComponent } from './contact-component';
 import { ContactService } from '../../services/contact.service';
 import { of } from 'rxjs';
-import { ActivatedRoute } from '@angular/router';
+import { provideRouter } from '@angular/router';
 import { vi } from 'vitest';
+
+@Component({ standalone: true, template: '' })
+class DummyComponent { }
 
 describe('ContactListComponent', () => {
     let component: ContactListComponent;
@@ -21,7 +25,9 @@ describe('ContactListComponent', () => {
             imports: [ContactListComponent],
             providers: [
                 { provide: ContactService, useValue: mockContactService },
-                { provide: ActivatedRoute, useValue: {} }
+                provideRouter([
+                    { path: 'contacts/:id', component: DummyComponent }
+                ])
             ]
         }).compileComponents();
 
