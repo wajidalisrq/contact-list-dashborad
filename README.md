@@ -34,3 +34,7 @@ Make sure you have Node.js and Angular CLI installed on your system:
 ```bash
 git clone [https://github.com/wajidalisrq/contact-list-dashborad.git](https://github.com/wajidalisrq/contact-list-dashborad.git)
 cd contact-list-dashborad
+npm install
+npm start
+npm test -- --no-watch
+npm run build
